@@ -23,31 +23,39 @@ The Ollama service is configured to use GPU if available. If you don't have a GP
 
 ## Quick Start
 
-1. Start the services:
+1. Copy the environment file:
+
+```bash
+cp .env.example .env
+```
+
+2. Adjust any settings in the `.env` file if needed (the defaults should work well for most users)
+
+3. Start the services:
 
 ```bash
 docker-compose up -d
 ```
 
-2. Wait for the models to download (this may take a while depending on your internet connection):
+4. Wait for the models to download (this may take a while depending on your internet connection):
 
 ```bash
 docker-compose logs -f ollama-init
 ```
 
-3. Verify that the services are running:
+5. Verify that the services are running:
 
 ```bash
 docker-compose ps
 ```
 
-4. Verify that the models are available:
+6. Verify that the models are available:
 
 ```bash
 curl http://localhost:11434/api/tags
 ```
 
-5. Verify that the Qdrant collections were created:
+7. Verify that the Qdrant collections were created:
 
 ```bash
 curl http://localhost:6333/collections/telegram_text

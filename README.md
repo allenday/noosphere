@@ -24,12 +24,38 @@ Inspired by Tiago Forte's "Building a Second Brain" methodology, Noosphere emplo
 - Process data in windowed segments (by time or message count)
 - Highly configurable pipeline with pluggable components
 
+## Quick Start
+
+Get up and running in minutes:
+
+```bash
+# Clone the repository
+git clone https://github.com/allenday/noosphere.git
+cd noosphere
+
+# Set up the Docker environment (see DOCKER.md for details)
+cp .env.example .env
+docker-compose up -d
+
+# Install the Python package
+pip install -e .
+
+# Create a configuration file
+cp conf.example.yaml conf.yaml
+
+# Process a Telegram export
+noo-telegram-batch --input-dir /path/to/telegram_export --output-dir ./output --config conf.yaml
+```
+
+For more detailed instructions, see the [Docker Setup](DOCKER.md) guide.
+
 ## Installation
 
 ### Requirements
 
 - Python 3.10 or higher
 - For image summarization: Ollama with a multimodal model like LLaVA
+- For vector storage: Qdrant
 
 ```bash
 # Install from the repository

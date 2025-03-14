@@ -7,7 +7,7 @@ services:
     container_name: noosphere-ollama
     restart: unless-stopped
     ports:
-      - "11434:11434"
+      - "${OLLAMA_PORT:-11434}:11434"
     volumes:
       - ollama_data:/root/.ollama
     deploy:
@@ -15,6 +15,8 @@ services:
         reservations:
           devices:
             - capabilities: [gpu]
+    environment:
+      - OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
       interval: 10s
@@ -27,11 +29,12 @@ services:
     container_name: noosphere-qdrant
     restart: unless-stopped
     ports:
-      - "6333:6333"
-      - "6334:6334"
+      - "${QDRANT_PORT:-6333}:6333"
+      - "${QDRANT_API_PORT:-6334}:6334"
     volumes:
       - qdrant_data:/qdrant/storage
     environment:
+      - QDRANT_HOST=${QDRANT_HOST:-0.0.0.0}
       - QDRANT_ALLOW_FULL_TEXT_SEARCH=true
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6333/readiness"]
@@ -50,11 +53,11 @@ services:
     command:
       - |
         # Pull required models for text summarization
-        curl -X POST http://ollama:11434/api/pull -d '{"name": "mistral:latest"}'
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "${MISTRAL_MODEL:-mistral:latest}"}'
         # Pull required models for image processing
-        curl -X POST http://ollama:11434/api/pull -d '{"name": "llava:latest"}'
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "${LLAVA_MODEL:-llava:latest}"}'
         # Pull required models for embedding
-        curl -X POST http://ollama:11434/api/pull -d '{"name": "nomic-embed-text:latest"}'
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "${EMBEDDING_MODEL:-nomic-embed-text:latest}"}'
 
   # Qdrant collection initializer
   qdrant-init:
