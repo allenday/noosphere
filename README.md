@@ -128,9 +128,15 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -e .
 
+# Create required directories
+mkdir -p logs
+mkdir -p tests/a_unit  # Required by pytest configuration
+
 # Run tests
 pytest
 ```
+
+> **Note**: The test directory structure is currently missing. The repository is configured to expect tests in the `tests/a_unit` directory as specified in `pytest.ini`.
 
 ## License
 
