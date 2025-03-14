@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  # Ollama service for LLM and embedding
+  ollama:
+    image: ollama/ollama:latest
+    container_name: noosphere-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Qdrant vector database
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: noosphere-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT_ALLOW_FULL_TEXT_SEARCH=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/readiness"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Initialize Ollama with required models
+  ollama-init:
+    image: curlimages/curl:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        # Pull required models for text summarization
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "mistral:latest"}'
+        # Pull required models for image processing
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "llava:latest"}'
+        # Pull required models for embedding
+        curl -X POST http://ollama:11434/api/pull -d '{"name": "nomic-embed-text:latest"}'
+
+  # Qdrant collection initializer
+  qdrant-init:
+    image: curlimages/curl:latest
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: [ "/bin/sh", "-c" ]
+    command:
+      - |
+        # Create text collection
+        curl -X PUT http://qdrant:6333/collections/telegram_text \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "vectors": {
+              "size": 768,
+              "distance": "Cosine"
+            }
+          }'
+        # Create image collection
+        curl -X PUT http://qdrant:6333/collections/telegram_images \
+          -H 'Content-Type: application/json' \
+          -d '{
+            "vectors": {
+              "size": 768,
+              "distance": "Cosine"
+            }
+          }'
+
+volumes:
+  ollama_data:
+  qdrant_data:
