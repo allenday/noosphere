@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+"""
+Command-line entry point for noosphere.telegram.batch
+"""
+import sys
+from noosphere.telegram.batch.__main__ import main
+
+if __name__ == "__main__":
+    sys.exit(main())
