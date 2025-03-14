@@ -139,7 +139,6 @@ venv.bak/
 # Project specific
 logs/
 output/
-test*/
 *.jsonl
 
 # Spyder project settings
