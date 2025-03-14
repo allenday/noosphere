@@ -62,7 +62,7 @@ def test_window():
 
 def test_store_vector_success(test_config, test_window):
     """Test successful vector storage."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         # Setup mock responses
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
@@ -95,7 +95,7 @@ def test_store_vector_success(test_config, test_window):
 
 def test_store_vector_batch(test_config, test_window):
     """Test batch vector storage."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         # Setup mock responses
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
@@ -135,7 +135,7 @@ def test_store_vector_batch(test_config, test_window):
 
 def test_store_vector_invalid_size(test_config, test_window):
     """Test handling of invalid vector size."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]
@@ -170,7 +170,7 @@ def test_store_vector_invalid_size(test_config, test_window):
 
 def test_store_vector_create_collection(test_config, test_window):
     """Test collection creation."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[]  # Empty collections list
@@ -203,7 +203,7 @@ def test_store_vector_create_collection(test_config, test_window):
 
 def test_store_vector_upload_retry(test_config, test_window):
     """Test retry on upload failure."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]
@@ -235,7 +235,7 @@ def test_store_vector_upload_retry(test_config, test_window):
 
 def test_store_vector_upload_failure(test_config, test_window):
     """Test handling of upload failure after all retries."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]
@@ -269,7 +269,7 @@ def test_store_vector_upload_failure(test_config, test_window):
 
 def test_store_vector_cleanup(test_config, test_window):
     """Test cleanup of batched points."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]
@@ -348,7 +348,7 @@ def test_point_validation():
 def test_store_vector_pickling(test_config, test_window):
     """Test that transform can be pickled and unpickled."""
     import pickle
-    from telexp.transforms.storage.qdrant import __name__ as qdrant_module_name
+    from noosphere.telegram.batch.transforms.storage.qdrant import __name__ as qdrant_module_name
     
     # Create transform and verify initial state
     transform = QdrantVectorStore(test_config)
@@ -376,7 +376,7 @@ def test_store_vector_pickling(test_config, test_window):
     assert unpickled._setup_called is False
     
     # Test that transform recreates resources and works after unpickling
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         # Setup client mock
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
@@ -401,7 +401,7 @@ def test_store_vector_teardown(test_config):
     """Test proper cleanup in teardown."""
     transform = QdrantVectorStore(test_config)
     
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         # Setup mocks
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
@@ -433,7 +433,7 @@ def test_store_vector_setup_idempotent(test_config):
     """Test that calling setup multiple times is safe."""
     transform = QdrantVectorStore(test_config)
     
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client, \
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client, \
          patch('logging.getLogger') as mock_logger:
         # Setup mocks
         mock_instance = Mock()
@@ -501,7 +501,7 @@ def test_store_vector_with_provided_client(test_config):
 
 def test_invalid_input_handling(test_config):
     """Test handling of invalid inputs to process()."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]
@@ -561,7 +561,7 @@ def test_invalid_input_handling(test_config):
 
 def test_finish_bundle_error_handling(test_config):
     """Test error handling in finish_bundle."""
-    with patch('telexp.transforms.storage.qdrant.QdrantClient') as mock_client:
+    with patch('noosphere.telegram.batch.transforms.storage.qdrant.QdrantClient') as mock_client:
         mock_instance = Mock()
         mock_instance.get_collections.return_value = CollectionsResponse(
             collections=[CollectionDescription(name=test_config.collection)]

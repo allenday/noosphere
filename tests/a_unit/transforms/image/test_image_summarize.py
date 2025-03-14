@@ -470,18 +470,18 @@ def test_summarize_image_function_success(test_image_path):
             mock_exists.return_value = True
             
             # Mock the config loading
-            with patch('telexp.transforms.image.summarize.load_config') as mock_load_config:
+            with patch('noosphere.telegram.batch.transforms.image.summarize.load_config') as mock_load_config:
                 mock_config = MagicMock()
                 mock_config.image_summarizer.model = "test-model"
                 mock_config.image_summarizer.llm_service = "test-service"
                 mock_load_config.return_value = mock_config
                 
                 # Mock the service manager and transform
-                with patch('telexp.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
+                with patch('noosphere.telegram.batch.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
                     mock_manager = MagicMock()
                     mock_manager_class.return_value = mock_manager
                     
-                    with patch('telexp.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
+                    with patch('noosphere.telegram.batch.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
                         mock_transform = MagicMock()
                         mock_transform_class.return_value = mock_transform
                         
@@ -511,13 +511,13 @@ def test_summarize_image_function_with_text_entities(test_image_path):
             mock_exists.return_value = True
             
             # Mock the config loading
-            with patch('telexp.transforms.image.summarize.load_config') as mock_load_config:
+            with patch('noosphere.telegram.batch.transforms.image.summarize.load_config') as mock_load_config:
                 mock_config = MagicMock()
                 mock_load_config.return_value = mock_config
                 
                 # Mock the service manager and transform
-                with patch('telexp.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
-                    with patch('telexp.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
+                with patch('noosphere.telegram.batch.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
+                    with patch('noosphere.telegram.batch.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
                         mock_transform = MagicMock()
                         mock_transform_class.return_value = mock_transform
                         
@@ -549,13 +549,13 @@ def test_summarize_image_function_with_text_field(test_image_path):
             mock_exists.return_value = True
             
             # Mock the config loading
-            with patch('telexp.transforms.image.summarize.load_config') as mock_load_config:
+            with patch('noosphere.telegram.batch.transforms.image.summarize.load_config') as mock_load_config:
                 mock_config = MagicMock()
                 mock_load_config.return_value = mock_config
                 
                 # Mock the service manager and transform
-                with patch('telexp.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
-                    with patch('telexp.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
+                with patch('noosphere.telegram.batch.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
+                    with patch('noosphere.telegram.batch.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
                         mock_transform = MagicMock()
                         mock_transform_class.return_value = mock_transform
                         
@@ -591,7 +591,7 @@ def test_summarize_image_function_errors(tmp_path):
         with patch('pathlib.Path.exists') as mock_exists:
             mock_exists.return_value = True
             
-            with patch('telexp.transforms.image.summarize.load_config') as mock_load_config:
+            with patch('noosphere.telegram.batch.transforms.image.summarize.load_config') as mock_load_config:
                 mock_load_config.side_effect = Exception("Config error")
                 
                 # Create a temp file
@@ -606,12 +606,12 @@ def test_summarize_image_function_errors(tmp_path):
         with patch('pathlib.Path.exists') as mock_exists:
             mock_exists.return_value = True
             
-            with patch('telexp.transforms.image.summarize.load_config') as mock_load_config:
+            with patch('noosphere.telegram.batch.transforms.image.summarize.load_config') as mock_load_config:
                 mock_config = MagicMock()
                 mock_load_config.return_value = mock_config
                 
-                with patch('telexp.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
-                    with patch('telexp.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
+                with patch('noosphere.telegram.batch.transforms.image.summarize.LLMServiceManager') as mock_manager_class:
+                    with patch('noosphere.telegram.batch.transforms.image.summarize.OllamaImageSummarize') as mock_transform_class:
                         mock_transform = MagicMock()
                         mock_transform_class.return_value = mock_transform
                         
@@ -645,7 +645,7 @@ def test_main_command_line_parsing():
             # Mock print to avoid output during test
             with patch('builtins.print'):
                 # Import and call main function
-                from telexp.transforms.image.summarize import main
+                from noosphere.telegram.batch.transforms.image.summarize import main
                 # Should return error code 1 since the file doesn't exist
                 assert main() == 1
                 

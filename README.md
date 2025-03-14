@@ -37,6 +37,9 @@ cd noosphere
 cp .env.example .env
 docker-compose up -d
 
+# Note: Docker services may take several minutes to fully initialize
+# as they need to download LLM models (1-4GB each)
+
 # Install the Python package
 pip install -e .
 

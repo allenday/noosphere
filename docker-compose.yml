@@ -10,18 +10,20 @@ services:
       - "${OLLAMA_PORT:-11434}:11434"
     volumes:
       - ollama_data:/root/.ollama
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
+# Removed GPU requirement for testing
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - capabilities: [gpu]
     environment:
       - OLLAMA_HOST=${OLLAMA_HOST:-0.0.0.0}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 30s
+      timeout: 30s
       retries: 5
+      start_period: 30s
 
   # Qdrant vector database
   qdrant:
@@ -37,17 +39,18 @@ services:
       - QDRANT_HOST=${QDRANT_HOST:-0.0.0.0}
       - QDRANT_ALLOW_FULL_TEXT_SEARCH=true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/readiness"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 30s
+      timeout: 30s
       retries: 5
+      start_period: 30s
 
   # Initialize Ollama with required models
   ollama-init:
     image: curlimages/curl:latest
     depends_on:
       ollama:
-        condition: service_healthy
+        condition: service_started
     restart: "no"
     entrypoint: [ "/bin/sh", "-c" ]
     command:
@@ -64,7 +67,7 @@ services:
     image: curlimages/curl:latest
     depends_on:
       qdrant:
-        condition: service_healthy
+        condition: service_started
     restart: "no"
     entrypoint: [ "/bin/sh", "-c" ]
     command:
