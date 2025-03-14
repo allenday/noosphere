@@ -1,0 +1,112 @@
+# Noosphere Configuration Example
+# Copy this file to conf.yaml and customize as needed
+
+logging:
+  level: "INFO"                 # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  distributed: false            # Use distributed logging format with process/thread IDs
+  log_file: "logs/noosphere.log"  # Log file path (optional)
+  json_logs: false              # Format logs as JSON
+  intercept_std_logging: true   # Intercept standard logging
+  module_levels:                # Specific log levels for modules
+    apache_beam: "WARNING"
+    apache_beam.runners: "WARNING"
+    apache_beam.io: "WARNING"
+    qdrant_client: "WARNING"
+    httpx: "WARNING"
+    urllib3: "WARNING"
+    PIL: "WARNING"
+  rotation: "10 MB"             # When to rotate logs (size, time)
+  retention: "1 week"           # How long to keep logs
+  compression: "zip"            # Compression format for rotated logs
+  enqueue: false                # Use thread-safe queue (set to False for Apache Beam compatibility)
+  log_startup: true             # Log startup information
+
+# Define LLM services for text and image processing
+llm_services:
+  - name: local_ollama           # Service name (used in summarizer configs)
+    type: "ollama"               # Service type
+    url: "http://localhost:11434" # API endpoint URL
+    models:
+      - name: mistral            # Model alias (used in summarizer configs)
+        model: "mistral:latest"  # Actual model name in the service
+        default_prompt: "Summarize the chat transcript, including key details. Be sure to mention who said what by name:\n\n{input_text}"
+      - name: llava              # Multimodal model for image processing
+        model: "llava:latest"
+        default_prompt: 'Describe this image in detail. Do not reference or say "the image", simply describe the contents.'
+
+# Define embedding services for vectorization
+embedding_services:
+  - name: local_ollama
+    type: "ollama"
+    url: "http://localhost:11434"
+    models:
+      - name: nomic-embed
+        model: "nomic-embed-text:latest"
+        vector_size: 768
+
+# Text vectorization configuration
+text_vectorizer:
+  embedding_service: "local_ollama" # Must match a name from embedding_services
+  model: "nomic-embed:latest"      # Must match a model name from embedding_services
+  timeout: 30                      # Request timeout in seconds
+  retries: 3                       # Number of retries for failed requests
+  retry_delay: 5                   # Delay between retries in seconds
+  input_field: "concatenated_text" # Field to read input from
+  output_field: "vector"           # Field to write output to
+  output_type: "vector"            # Must be "vector" for vectorizers
+  vector_size: 768                 # Expected size of output vectors
+
+# Image summarization configuration
+image_summarizer:
+  llm_service: "local_ollama"     # Must match a name from llm_services
+  model: "llava:latest"           # Must match a model name from llm_services
+  timeout: 30
+  retries: 3
+  retry_delay: 5
+  prompt: 'Describe this image in detail. Do not reference or say "the image", simply describe the contents.'
+  input_field: "image_path"
+  output_field: "summary_text"
+  output_type: "text"            # Must be "text" for summarizers
+  
+# Text summarization configuration
+text_summarizer:
+  llm_service: "local_ollama"
+  model: "mistral:latest"
+  timeout: 30
+  retries: 3
+  retry_delay: 5
+  prompt: "Summarize the chat transcript, including key details. Be sure to mention who said what by name:\n\n{input_text}"
+  input_field: "concatenated_text"
+  output_field: "summary_text"
+  output_type: "text"
+
+# Vector storage for text data
+text_vector_storage:
+  url: "http://localhost:6333"   # Qdrant server URL
+  collection: "telegram_text"    # Collection name in Qdrant
+  vector_size: 768               # Must match vector_size in text_vectorizer
+  retries: 3
+  backoff_factor: 0.5
+  timeout: 30
+  batch_size: 20                 # Number of vectors to store in one request
+
+# Vector storage for image data
+image_vector_storage:
+  url: "http://localhost:6333"
+  collection: "telegram_images"
+  vector_size: 768               # Should match your image embedding vector size
+  retries: 3
+  backoff_factor: 0.5
+  timeout: 30
+  batch_size: 20
+
+# Session-based windowing configuration
+window_by_session:
+  timeout_seconds: 3600          # Session timeout in seconds (1 hour)
+  min_size: 1                    # Minimum number of messages per window
+  max_size: 100                  # Maximum number of messages per window
+
+# Size-based sliding window configuration
+window_by_size:
+  size: 10                       # Number of messages per window
+  overlap: 5                     # Number of messages to overlap between windows
