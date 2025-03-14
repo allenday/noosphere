@@ -7,7 +7,7 @@ import pickle
 import io
 import time
 
-from telexp.logging import LoggingMixin, log_performance, get_logger, setup_logging
+from noosphere.telegram.batch.logging import LoggingMixin, log_performance, get_logger, setup_logging
 
 
 class TestLoggingDoFn(beam.DoFn, LoggingMixin):

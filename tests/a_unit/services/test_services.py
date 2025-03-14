@@ -4,8 +4,8 @@ import pickle
 import httpx
 from typing import List
 
-from telexp.services.llm import LLMService, LLMModel, LLMServiceManager
-from telexp.services.embedding import EmbeddingService, EmbeddingModel, EmbeddingServiceManager
+from noosphere.telegram.batch.services.llm import LLMService, LLMModel, LLMServiceManager
+from noosphere.telegram.batch.services.embedding import EmbeddingService, EmbeddingModel, EmbeddingServiceManager
 
 @pytest.fixture
 def test_llm_service():

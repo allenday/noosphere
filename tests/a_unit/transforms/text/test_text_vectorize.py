@@ -11,10 +11,10 @@ import yaml
 from pydantic import ValidationError
 import logging
 
-from telexp.transforms.text.vectorize import OllamaVectorize
-from telexp.schema import Window, WindowMetadata
-from telexp.config import Config, TextVectorizerConfig
-from telexp.services.embedding import EmbeddingServiceManager, EmbeddingService, EmbeddingModel
+from noosphere.telegram.batch.transforms.text.vectorize import OllamaVectorize
+from noosphere.telegram.batch.schema import Window, WindowMetadata
+from noosphere.telegram.batch.config import Config, TextVectorizerConfig
+from noosphere.telegram.batch.services.embedding import EmbeddingServiceManager, EmbeddingService, EmbeddingModel
 
 def load_config():
     with open('conf.yaml', 'r') as f:

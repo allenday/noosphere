@@ -9,9 +9,9 @@ from datetime import datetime, timedelta
 from apache_beam.transforms.window import GlobalWindow
 from apache_beam.utils.windowed_value import WindowedValue
 
-from telexp.transforms.window import WindowBySession, WindowBySize
-from telexp.config import WindowBySessionConfig, WindowBySizeConfig
-from telexp.schema import Window, RawMessage
+from noosphere.telegram.batch.transforms.window import WindowBySession, WindowBySize
+from noosphere.telegram.batch.config import WindowBySessionConfig, WindowBySizeConfig
+from noosphere.telegram.batch.schema import Window, RawMessage
 
 @pytest.fixture
 def test_session_config():
@@ -283,8 +283,8 @@ def test_window_by_size_finish_bundle(test_size_config, test_messages):
 
 def test_window_to_langchain_converter():
     """Test the WindowToLangchainConverter transform."""
-    from telexp.transforms.window import WindowToLangchainConverter
-    from telexp.schema import WindowMetadata, Window
+    from noosphere.telegram.batch.transforms.window import WindowToLangchainConverter
+    from noosphere.telegram.batch.schema import WindowMetadata, Window
     
     # Create a test window with sample data
     window_id = uuid.uuid4()

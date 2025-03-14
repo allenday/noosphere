@@ -11,10 +11,10 @@ import yaml
 from pydantic import ValidationError
 import logging
 
-from telexp.transforms.text.summarize import OllamaSummarize
-from telexp.schema import Window, WindowMetadata
-from telexp.config import Config, TextSummarizerConfig
-from telexp.services.llm import LLMServiceManager, LLMService, LLMModel
+from noosphere.telegram.batch.transforms.text.summarize import OllamaSummarize
+from noosphere.telegram.batch.schema import Window, WindowMetadata
+from noosphere.telegram.batch.config import Config, TextSummarizerConfig
+from noosphere.telegram.batch.services.llm import LLMServiceManager, LLMService, LLMModel
 
 def load_config():
     with open('conf.yaml', 'r') as f:

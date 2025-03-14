@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 import yaml
-from telexp.config import Config, load_config
+from noosphere.telegram.batch.config import Config, load_config
 
 def test_config_from_yaml(tmp_path):
     """Test loading config from a YAML file."""

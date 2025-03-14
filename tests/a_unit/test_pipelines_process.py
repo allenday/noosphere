@@ -7,9 +7,9 @@ import uuid
 from datetime import datetime
 from unittest.mock import patch, MagicMock, mock_open
 
-from telexp.pipelines.process import TelegramExportProcessor
-from telexp.schema import RawMessage, Window, WindowMetadata
-from telexp.config import Config
+from noosphere.telegram.batch.pipelines.process import TelegramExportProcessor
+from noosphere.telegram.batch.schema import RawMessage, Window, WindowMetadata
+from noosphere.telegram.batch.config import Config
 
 
 @pytest.fixture

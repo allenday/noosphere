@@ -3,8 +3,8 @@ import pytest
 import uuid
 from unittest.mock import patch
 
-from telexp.schema import Window, WindowMetadata
-from telexp.transforms.message_aggregation import MessageAggregator
+from noosphere.telegram.batch.schema import Window, WindowMetadata
+from noosphere.telegram.batch.transforms.message_aggregation import MessageAggregator
 
 
 @pytest.fixture

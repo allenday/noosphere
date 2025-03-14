@@ -11,13 +11,13 @@ from contextlib import contextmanager
 import apache_beam as beam
 from apache_beam.testing.util import assert_that, equal_to
 
-from telexp.logging import (
+from noosphere.telegram.batch.logging import (
     setup_logging, 
     get_logger, 
     LoggingMixin,
     log_performance
 )
-from telexp.config import LoggingConfig
+from noosphere.telegram.batch.config import LoggingConfig
 
 
 @contextmanager

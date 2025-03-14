@@ -11,8 +11,8 @@ from qdrant_client import QdrantClient, models
 from qdrant_client.http.exceptions import UnexpectedResponse
 from qdrant_client.http.models import CollectionsResponse, CollectionDescription, VectorParams, Distance
 
-from telexp.transforms.storage.qdrant import QdrantVectorStore, VectorStorageConfig, Point
-from telexp.schema import LangchainWindow
+from noosphere.telegram.batch.transforms.storage.qdrant import QdrantVectorStore, VectorStorageConfig, Point
+from noosphere.telegram.batch.schema import LangchainWindow
 
 def load_config():
     with open('conf.yaml', 'r') as f:

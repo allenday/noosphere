@@ -8,7 +8,7 @@ import pickle
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from telexp.logging import (
+from noosphere.telegram.batch.logging import (
     setup_logging, 
     get_logger, 
     setup_test_logging, 

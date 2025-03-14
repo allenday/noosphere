@@ -15,10 +15,10 @@ import io
 import sys
 from pathlib import Path
 
-from telexp.transforms.image.summarize import OllamaImageSummarize, summarize_image
-from telexp.schema import RawMessage, Photo, TextEntity
-from telexp.config import Config, ImageSummarizerConfig
-from telexp.services.llm import LLMServiceManager, LLMService, LLMModel
+from noosphere.telegram.batch.transforms.image.summarize import OllamaImageSummarize, summarize_image
+from noosphere.telegram.batch.schema import RawMessage, Photo, TextEntity
+from noosphere.telegram.batch.config import Config, ImageSummarizerConfig
+from noosphere.telegram.batch.services.llm import LLMServiceManager, LLMService, LLMModel
 
 def load_config():
     with open('conf.yaml', 'r') as f:

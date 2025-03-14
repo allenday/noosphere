@@ -7,8 +7,8 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from telexp.config import LoggingConfig, Config
-import telexp.logging as logging_module
+from noosphere.telegram.batch.config import LoggingConfig, Config
+import noosphere.telegram.batch.logging as logging_module
 
 
 def test_logging_config_defaults():

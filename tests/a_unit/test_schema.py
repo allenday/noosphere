@@ -1,7 +1,7 @@
 import json
 import pytest
 from pathlib import Path
-from telexp.schema import (
+from noosphere.telegram.batch.schema import (
     MessageType,
     PhotoSize,
     Photo,
